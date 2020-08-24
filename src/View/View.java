@@ -9,6 +9,7 @@ import java.awt.*;
 public class View extends JFrame {
     private CenterPanel centerPanel;
     private SouthPanel southPanel;
+    private PersonalDataFrame personalDataFrame;
 
     public View(){
         super("Grade Calculator");
@@ -29,6 +30,14 @@ public class View extends JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         setVisible(true);
+    }
+
+    public void runPersonalDataFrame(){
+        personalDataFrame = new PersonalDataFrame();
+    }
+
+    public PersonalDataFrame getPersonalDataFrame(){
+        return personalDataFrame;
     }
 
     public CenterPanel getCenterPanel() {

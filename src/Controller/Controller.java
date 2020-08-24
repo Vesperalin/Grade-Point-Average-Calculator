@@ -18,7 +18,7 @@ public class Controller {
     private Model model;
 
     public Controller(View view, Model model){
-        this.view = view;
+        this.view=view;
         this.model=model;
         view.getSouthPanel().getCenterSubPanel().addAddCourseButtonListener(new AddCourseListener());
         view.getSouthPanel().getCenterSubPanel().addClearButtonListener(new ClearDataListener());
@@ -54,6 +54,24 @@ public class Controller {
     private class CreateReportListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            view.runPersonalDataFrame();
+            view.getPersonalDataFrame().addConfirmButtonListener(new ConfirmButtonListener());
+        }
+    }
+
+    private class ConfirmButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(!(view.getPersonalDataFrame().getStudentsID().getText().isEmpty()) && !(view.getPersonalDataFrame().getStudentsName().getText().isEmpty()) && !(view.getPersonalDataFrame().getStudentsSurname().getText().isEmpty())){
+                try{
+                    model.setStudentName(view.getPersonalDataFrame().getStudentsName().getText());
+                    model.setStudentSurname(view.getPersonalDataFrame().getStudentsSurname().getText());
+                    model.setStudentID(Long.valueOf(view.getPersonalDataFrame().getStudentsID().getText()));
+                    view.getPersonalDataFrame().dispose();
+                }catch(NumberFormatException exception){
+                    view.showError("Wrong input! Please check if your data is correct");
+                }
+            }
             ArrayList<String> names = new ArrayList<>();
             ArrayList<Float> grades = new ArrayList<>();
             ArrayList<Integer> ECTS = new ArrayList<>();
