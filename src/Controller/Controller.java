@@ -62,21 +62,29 @@ public class Controller {
     private class ConfirmButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(!(view.getPersonalDataFrame().getStudentsID().getText().isEmpty()) && !(view.getPersonalDataFrame().getStudentsName().getText().isEmpty()) && !(view.getPersonalDataFrame().getStudentsSurname().getText().isEmpty())){
-                try{
-                    model.setStudentName(view.getPersonalDataFrame().getStudentsName().getText());
-                    model.setStudentSurname(view.getPersonalDataFrame().getStudentsSurname().getText());
-                    model.setStudentID(Long.valueOf(view.getPersonalDataFrame().getStudentsID().getText()));
-                    view.getPersonalDataFrame().dispose();
-                }catch(NumberFormatException exception){
-                    view.showError("Wrong input! Please check if your data is correct");
-                }
+            if(!(view.getPersonalDataFrame().getStudentsID().getText().isEmpty()) && !(view.getPersonalDataFrame().getStudentsName().getText().isEmpty()) && !(view.getPersonalDataFrame().getStudentsSurname().getText().isEmpty()) && (isNumeric(view.getPersonalDataFrame().getStudentsID().getText()))){
+                model.setStudentName(view.getPersonalDataFrame().getStudentsName().getText());
+                model.setStudentSurname(view.getPersonalDataFrame().getStudentsSurname().getText());
+                model.setStudentID(Long.valueOf(view.getPersonalDataFrame().getStudentsID().getText()));
+                view.getPersonalDataFrame().dispose();
+                ArrayList<String> names = new ArrayList<>();
+                ArrayList<Float> grades = new ArrayList<>();
+                ArrayList<Integer> ECTS = new ArrayList<>();
+                dataProcessing(names, grades, ECTS, true);
+            }else{
+                view.showError("Wrong input! Please check if your data is correct");
             }
-            ArrayList<String> names = new ArrayList<>();
-            ArrayList<Float> grades = new ArrayList<>();
-            ArrayList<Integer> ECTS = new ArrayList<>();
-            dataProcessing(names, grades, ECTS, true);
         }
+    }
+
+    private boolean isNumeric(String data) {
+        if(data==null) return false;
+        try {
+            Long.parseLong(data);
+        }catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 
     private void createReport(){
@@ -87,81 +95,79 @@ public class Controller {
             File userChoosenPath=userPath.getPaht();
 
             File reportFile;
-            if(userChoosenPath==null){
-                reportFile=new File("C:\\Users\\Klaudia Błażyczek\\Desktop\\GradeReport.pdf");
-            }else{
+            if(userChoosenPath!=null){
                 reportFile=new File(userChoosenPath.getPath() +".pdf");
+                FileOutputStream pdfFileout = new FileOutputStream(reportFile);
+                PdfWriter.getInstance(report, pdfFileout);
+                report.open();
+
+                String line;
+                Paragraph paragraph;
+                PdfPCell cell;
+
+                paragraph=new Paragraph("Grade Report", new Font(Font.FontFamily.TIMES_ROMAN, 30, Font.BOLD));
+                paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+                report.add(paragraph);
+                report.add(new Paragraph(" "));
+
+                line="Grade Point Average: "+model.getGradePointAverage();
+                paragraph = new Paragraph(line, new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.NORMAL));
+                paragraph.setAlignment(Paragraph.ALIGN_LEFT);
+                report.add(paragraph);
+                report.add(new Paragraph(" "));
+
+                PdfPTable table = new PdfPTable(3);
+                table.setWidthPercentage(100);
+                table.setSpacingBefore(10f);
+                float[] columnWidths = {1f, 1f, 1f};
+                table.setWidths(columnWidths);
+
+                ArrayList<String> titles = new ArrayList<>();
+                titles.add("Course name");
+                titles.add("ECTS");
+                titles.add("Grade");
+
+                for(int i=0; i<3; i++){
+                    paragraph = new Paragraph(titles.get(i), new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL));
+                    cell = new PdfPCell(paragraph);
+                    cell.setBorderColor(BaseColor.BLACK);
+                    cell.setPaddingLeft(10);
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    table.addCell(cell);
+                }
+
+                for(int i=0; i<model.getCourses().size(); i++){
+                    paragraph = new Paragraph(model.getCourses().get(i).getName(), new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL));
+                    cell = new PdfPCell(paragraph);
+                    cell.setBorderColor(BaseColor.BLACK);
+                    cell.setPaddingLeft(10);
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    table.addCell(cell);
+
+                    paragraph = new Paragraph(model.getCourses().get(i).getECTS().toString(), new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL));
+                    cell = new PdfPCell(paragraph);
+                    cell.setBorderColor(BaseColor.BLACK);
+                    cell.setPaddingLeft(10);
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    table.addCell(cell);
+
+                    paragraph = new Paragraph(model.getCourses().get(i).getGrade().toString(), new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL));
+                    cell = new PdfPCell(paragraph);
+                    cell.setBorderColor(BaseColor.BLACK);
+                    cell.setPaddingLeft(10);
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    table.addCell(cell);
+                }
+
+                report.add(table);
+                report.add(new Paragraph(""));
+                report.close();
             }
-
-            FileOutputStream pdfFileout = new FileOutputStream(reportFile);
-            PdfWriter.getInstance(report, pdfFileout);
-            report.open();
-
-            String line;
-            Paragraph paragraph;
-            PdfPCell cell;
-
-            paragraph=new Paragraph("Grade Report", new Font(Font.FontFamily.TIMES_ROMAN, 30, Font.BOLD));
-            paragraph.setAlignment(Paragraph.ALIGN_CENTER);
-            report.add(paragraph);
-            report.add(new Paragraph(" "));
-
-            line="Grade Point Average: "+model.getGradePointAverage();
-            paragraph = new Paragraph(line, new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.NORMAL));
-            paragraph.setAlignment(Paragraph.ALIGN_LEFT);
-            report.add(paragraph);
-            report.add(new Paragraph(" "));
-
-            PdfPTable table = new PdfPTable(3);
-            table.setWidthPercentage(100);
-            table.setSpacingBefore(10f);
-            float[] columnWidths = {1f, 1f, 1f};
-            table.setWidths(columnWidths);
-
-            ArrayList<String> titles = new ArrayList<>();
-            titles.add("Course name");
-            titles.add("ECTS");
-            titles.add("Grade");
-
-            for(int i=0; i<3; i++){
-                paragraph = new Paragraph(titles.get(i), new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL));
-                cell = new PdfPCell(paragraph);
-                cell.setBorderColor(BaseColor.BLACK);
-                cell.setPaddingLeft(10);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                table.addCell(cell);
-            }
-
-            for(int i=0; i<model.getCourses().size(); i++){
-                paragraph = new Paragraph(model.getCourses().get(i).getName(), new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL));
-                cell = new PdfPCell(paragraph);
-                cell.setBorderColor(BaseColor.BLACK);
-                cell.setPaddingLeft(10);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                table.addCell(cell);
-
-                paragraph = new Paragraph(model.getCourses().get(i).getECTS().toString(), new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL));
-                cell = new PdfPCell(paragraph);
-                cell.setBorderColor(BaseColor.BLACK);
-                cell.setPaddingLeft(10);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                table.addCell(cell);
-
-                paragraph = new Paragraph(model.getCourses().get(i).getGrade().toString(), new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL));
-                cell = new PdfPCell(paragraph);
-                cell.setBorderColor(BaseColor.BLACK);
-                cell.setPaddingLeft(10);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                table.addCell(cell);
-            }
-
-            report.add(table);
-            report.add(new Paragraph(""));
-            report.close();
+            
         }catch(DocumentException exception){
             view.showError("PDF error!");
         }catch(FileNotFoundException exception){

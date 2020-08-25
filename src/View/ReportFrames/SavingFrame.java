@@ -12,7 +12,7 @@ public class SavingFrame extends JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             fileToSave = fileChooser.getSelectedFile();
         }else{
-            JOptionPane.showMessageDialog(this, "Something went wrong! - We will save it on the desktop");
+            JOptionPane.showMessageDialog(this, "Something went wrong!");
             fileToSave=null;
         }
         return fileToSave;
