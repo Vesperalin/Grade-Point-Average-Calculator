@@ -34,9 +34,6 @@ public class Model {
     public void clear(){
         courses=new ArrayList<Course>();
         gradePointAverage=0f;
-        studentName=null;
-        studentSurname=null;
-        studentID=null;
     }
 
     public List<Course> getCourses() {

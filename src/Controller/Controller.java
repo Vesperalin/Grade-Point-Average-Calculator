@@ -110,6 +110,21 @@ public class Controller {
                 report.add(paragraph);
                 report.add(new Paragraph(" "));
 
+                line="Student's index: " +model.getStudentID();
+                paragraph = new Paragraph(line, new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.NORMAL));
+                paragraph.setAlignment(Paragraph.ALIGN_LEFT);
+                report.add(paragraph);
+
+                line="Student's name: " +model.getStudentName();
+                paragraph = new Paragraph(line, new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.NORMAL));
+                paragraph.setAlignment(Paragraph.ALIGN_LEFT);
+                report.add(paragraph);
+
+                line="Student's surname: " +model.getStudentSurname();
+                paragraph = new Paragraph(line, new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.NORMAL));
+                paragraph.setAlignment(Paragraph.ALIGN_LEFT);
+                report.add(paragraph);
+
                 line="Grade Point Average: "+model.getGradePointAverage();
                 paragraph = new Paragraph(line, new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.NORMAL));
                 paragraph.setAlignment(Paragraph.ALIGN_LEFT);
@@ -167,7 +182,7 @@ public class Controller {
                 report.add(new Paragraph(""));
                 report.close();
             }
-            
+
         }catch(DocumentException exception){
             view.showError("PDF error!");
         }catch(FileNotFoundException exception){
