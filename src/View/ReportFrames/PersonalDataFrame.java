@@ -1,4 +1,6 @@
-package View;
+package View.ReportFrames;
+
+import View.View;
 
 import javax.swing.*;
 

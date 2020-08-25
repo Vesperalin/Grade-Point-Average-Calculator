@@ -2,6 +2,7 @@ package View;
 
 import View.CenterPanel.CenterPanel;
 import View.NorthPanel.NorthPanel;
+import View.ReportFrames.PersonalDataFrame;
 import View.SouthPanel.SouthPanel;
 import javax.swing.*;
 import java.awt.*;
