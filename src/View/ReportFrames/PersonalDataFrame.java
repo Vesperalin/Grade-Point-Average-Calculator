@@ -1,7 +1,5 @@
 package View.ReportFrames;
 
-import View.View;
-
 import javax.swing.*;
 
 import java.awt.*;
@@ -21,6 +19,7 @@ public class PersonalDataFrame extends JFrame {
 
         JLabel IDLabel = new JLabel("Student's index number");
         IDLabel.setFont(new Font("Verdena", Font.PLAIN, 15));
+        IDLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         mainPanel.add(IDLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         studentsID=new JTextField(20);
@@ -29,6 +28,7 @@ public class PersonalDataFrame extends JFrame {
 
         JLabel nameLabel = new JLabel("Student's name");
         nameLabel.setFont(new Font("Verdena", Font.PLAIN, 15));
+        nameLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         mainPanel.add(nameLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         studentsName = new JTextField(20);
@@ -37,6 +37,7 @@ public class PersonalDataFrame extends JFrame {
 
         JLabel surnameLabel = new JLabel("Student's Surname");
         surnameLabel.setFont(new Font("Verdena", Font.PLAIN, 15));
+        surnameLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         mainPanel.add(surnameLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         studentsSurname = new JTextField(20);
@@ -50,7 +51,7 @@ public class PersonalDataFrame extends JFrame {
         this.getContentPane().add(mainPanel);
 
         setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
