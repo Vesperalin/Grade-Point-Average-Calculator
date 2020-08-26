@@ -18,7 +18,7 @@ Academic grade point average calculator
 ![Report](https://user-images.githubusercontent.com/68510280/91289502-b704ad80-e792-11ea-816d-a0300398c521.png)
 
 ## General Info
-This programme allows you to calculate yours grade point average. 
+This programme allows you to calculate your grade point average. 
 If there is not enough lines for all of your courses, you can easily add some by clicking "Add new course" button and use the scroll bar to acces them.
 You can also create a report (PDF file) which contains your GPA, courses names, ECTS, grades and student's personal data. Just click "Create report" button.
 
