@@ -3,14 +3,18 @@ import View.*;
 import Model.*;
 import View.ReportFrames.SavingFrame;
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Controller {
@@ -181,12 +185,15 @@ public class Controller {
                 report.add(table);
                 report.add(new Paragraph(""));
                 report.close();
-            }
 
+                Desktop.getDesktop().open(reportFile);
+            }
         }catch(DocumentException exception){
             view.showError("PDF error!");
         }catch(FileNotFoundException exception){
             view.showError("There is no such a file!");
+        } catch (IOException e) {
+            view.showError("Something went wrong!");
         }
     }
 
