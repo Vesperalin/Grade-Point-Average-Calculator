@@ -20,7 +20,8 @@ Academic grade point average calculator
 ## General Info
 This programme allows you to calculate your grade point average. 
 If there is not enough lines for all of your courses, you can easily add some by clicking "Add new course" button and use the scroll bar to acces them.
-You can also create a report (PDF file) which contains your GPA, courses names, ECTS, grades and student's personal data. Just click "Create report" button.
+You can also create a report (PDF file) which contains your GPA, courses names, ECTS, grades and student's personal data. Just click "Create report" button and 
+complete personal information.
 
 ## Programming Language 
 * Java
